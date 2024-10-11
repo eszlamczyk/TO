@@ -1,3 +1,7 @@
 active-record/.gradle
 active-record/.idea
 active-record/build
+
+orm/.gradle
+orm/.idea
+orm/build

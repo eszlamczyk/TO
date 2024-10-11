@@ -4,6 +4,7 @@ import pl.edu.agh.iisg.to.dao.CourseDao;
 import pl.edu.agh.iisg.to.dao.StudentDao;
 import pl.edu.agh.iisg.to.model.Student;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,8 @@ public class StudentRepository implements Repository<Student>{
     }
 
     public List<Student> findAllByCourseName(String courseName) {
-
+        return courseDao.findByName(courseName)
+                .map(course -> course.studentSet().stream().toList())
+                .orElse(Collections.emptyList());
     }
 }

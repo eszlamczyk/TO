@@ -31,13 +31,12 @@ public class StudentDao extends GenericDao<Student> {
     }
 
     public Optional<Student> findByIndexNumber(final int indexNumber) {
-        // TODO - implement
         try {
             return Optional.of(
                     currentSession().createQuery("select s from Student s where s.indexNumber = :index",Student.class)
                     .setParameter("index", indexNumber)
                     .getSingleResult());
-        } catch (PersistenceException e){
+        } catch (Exception e){
             e.printStackTrace();
             return Optional.empty();
         }
