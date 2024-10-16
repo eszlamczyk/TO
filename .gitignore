@@ -5,3 +5,8 @@ active-record/build
 orm/.gradle
 orm/.idea
 orm/build
+
+lab-rx/.gradle
+lab-rx/.idea
+lab-rx/build
+lab-rx/photos
