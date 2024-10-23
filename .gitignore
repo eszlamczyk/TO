@@ -10,3 +10,8 @@ lab-rx/.gradle
 lab-rx/.idea
 lab-rx/build
 lab-rx/photos
+
+lab-gui-gallery/.gradle
+lab-gui-gallery/.idea
+lab-gui-gallery/build
+
