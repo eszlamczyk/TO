@@ -1,12 +1,9 @@
 package controller;
 
 
-import com.sun.javafx.collections.ObservableListWrapper;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -18,8 +15,6 @@ import model.Gallery;
 import model.Photo;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import util.PhotoDownloader;
-
-import java.util.logging.Level;
 
 public class GalleryController {
 
@@ -79,7 +74,7 @@ public class GalleryController {
         imageView.imageProperty().bind(selectedPhoto.photoDataProperty());
     }
 
-    public void searchButtonClicked(ActionEvent event) {
+    public void searchButtonClicked(ActionEvent _event) {
         //System.out.println("Started");
         PhotoDownloader photoDownloader = new PhotoDownloader();
         //System.out.println("Downloader done");
@@ -93,9 +88,7 @@ public class GalleryController {
 
         photoObservable
                 .observeOn(JavaFxScheduler.platform())
-                .doOnNext(photo -> {
-                    Platform.runLater(() -> galleryModel.addPhoto(photo));
-                })
+                .doOnNext(photo -> Platform.runLater(() -> galleryModel.addPhoto(photo)))
                 .doOnComplete(() -> System.out.println("Download and UI update complete"))
                 .subscribe();
 

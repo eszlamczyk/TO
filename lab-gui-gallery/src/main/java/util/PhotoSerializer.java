@@ -12,12 +12,6 @@ import javafx.embed.swing.SwingFXUtils;
 import model.Gallery;
 import model.Photo;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.logging.Logger;
-
 public class PhotoSerializer {
 
     private static final Logger log = Logger.getLogger(PhotoSerializer.class.getName());
@@ -37,9 +31,7 @@ public class PhotoSerializer {
                     change.getAddedSubList().forEach(photo -> {
                         savePhoto(photo);
 
-                        photo.nameProperty().addListener((observable, oldValue, newValue) -> {
-                            renamePhoto(oldValue, newValue);
-                        });
+                        photo.nameProperty().addListener((observable, oldValue, newValue) -> renamePhoto(oldValue, newValue));
                     });
                 } else if (change.wasRemoved()) {
                     change.getRemoved().forEach(this::removePhoto);
