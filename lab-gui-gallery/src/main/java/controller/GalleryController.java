@@ -2,7 +2,9 @@ package controller;
 
 
 import com.sun.javafx.collections.ObservableListWrapper;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import model.Gallery;
 import model.Photo;
+import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import util.PhotoDownloader;
 
 import java.util.logging.Level;
@@ -54,28 +57,49 @@ public class GalleryController {
         });
 
         imagesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            bindSelectedPhoto(newValue);
+            if(newValue != null){
+                bindSelectedPhoto(newValue);
+            }
         });
     }
 
     public void setModel(Gallery gallery) {
         this.galleryModel = gallery;
-        ObservableList<Photo> photos = FXCollections.observableArrayList(gallery.getPhotos());
-        imagesListView.setItems(photos);
-        imagesListView.getSelectionModel().select(0);
+
+        imagesListView.setItems(gallery.getPhotos());
+
+        if (!gallery.getPhotos().isEmpty()) {
+            imagesListView.getSelectionModel().select(0);
+        }
     }
 
+
     private void bindSelectedPhoto(Photo selectedPhoto) {
-        imageNameField.textProperty().bind(selectedPhoto.nameProperty());
+        imageNameField.textProperty().bindBidirectional(selectedPhoto.nameProperty());
         imageView.imageProperty().bind(selectedPhoto.photoDataProperty());
     }
 
     public void searchButtonClicked(ActionEvent event) {
+        //System.out.println("Started");
         PhotoDownloader photoDownloader = new PhotoDownloader();
-        galleryModel.clear();
-        photoDownloader.searchForPhotos(searchTextField.getText())
-                .subscribe(photo -> galleryModel.addPhoto(photo));
+        //System.out.println("Downloader done");
 
+        Platform.runLater(() -> galleryModel.clear());
+
+        //System.out.println("Clear done");
+
+        Observable<Photo> photoObservable = photoDownloader.searchForPhotos(searchTextField.getText())
+                .subscribeOn(Schedulers.io());
+
+        photoObservable
+                .observeOn(JavaFxScheduler.platform())
+                .doOnNext(photo -> {
+                    Platform.runLater(() -> galleryModel.addPhoto(photo));
+                })
+                .doOnComplete(() -> System.out.println("Download and UI update complete"))
+                .subscribe();
+
+        //System.out.println("Subscribed");
     }
 }
 
