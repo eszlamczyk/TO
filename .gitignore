@@ -14,4 +14,14 @@ lab-rx/photos
 lab-gui-gallery/.gradle
 lab-gui-gallery/.idea
 lab-gui-gallery/build
+lab-gui-gallery/photos
 
+lab-mvp/.gradle
+lab-mvp/.idea
+lab-mvp/build
+lab-mvp/.run
+
+lab-command/.gradle
+lab-command/.idea
+lab-command/build
+lab-command/.run
