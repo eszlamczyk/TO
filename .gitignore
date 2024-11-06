@@ -25,3 +25,8 @@ lab-command/.gradle
 lab-command/.idea
 lab-command/build
 lab-command/.run
+
+lab-ioc/.gradle
+lab-ioc/.idea
+lab-ioc/build
+lab-ioc/.run
