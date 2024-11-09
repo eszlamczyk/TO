@@ -9,19 +9,17 @@ import pl.edu.agh.school.persistence.PersistenceManager;
 
 public class SchoolDAO {
 
-    public static final Logger log = Logger.getInstance();
-
+    private final Logger log;
     private final List<Teacher> teachers;
-
     private final List<SchoolClass> classes;
-
     private final PersistenceManager manager;
 
     @Inject
-    public SchoolDAO(PersistenceManager manager) {
+    public SchoolDAO(PersistenceManager manager, Logger log) {
         this.manager = manager;
-        teachers = manager.loadTeachers();
-        classes = manager.loadClasses();
+        this.log = log;
+        this.teachers = manager.loadTeachers();
+        this.classes = manager.loadClasses();
     }
 
     public void addTeacher(Teacher teacher) {

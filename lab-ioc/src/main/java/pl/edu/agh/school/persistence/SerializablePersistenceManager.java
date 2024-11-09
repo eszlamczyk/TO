@@ -9,27 +9,30 @@ import com.google.inject.name.Named;
 import pl.edu.agh.logger.Logger;
 import pl.edu.agh.school.SchoolClass;
 import pl.edu.agh.school.Teacher;
+import pl.edu.agh.school.guice.ClassesStorage;
+import pl.edu.agh.school.guice.TeachersStorage;
 
 public final class SerializablePersistenceManager implements PersistenceManager {
 
-    private static final Logger log = Logger.getInstance();
+
+    private final Logger log;
 
     private String teachersStorageFileName;
 
     private String classStorageFileName;
 
-    public SerializablePersistenceManager() {
-        teachersStorageFileName = "teachers.dat";
-        classStorageFileName = "classes.dat";
+    @Inject
+    public SerializablePersistenceManager(Logger log) {
+        this.log = log;
     }
 
     @Inject
-    public void setClassStorageFileName(@Named("classesStorage") String classStorageFileName) {
+    public void setClassStorageFileName(@ClassesStorage String classStorageFileName) {
         this.classStorageFileName = classStorageFileName;
     }
 
     @Inject
-    public void setTeachersStorageFileName(@Named("teachersStorage") String teachersStorageFileName) {
+    public void setTeachersStorageFileName(@TeachersStorage String teachersStorageFileName) {
         this.teachersStorageFileName = teachersStorageFileName;
     }
 

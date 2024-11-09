@@ -11,6 +11,7 @@ import com.google.inject.Injector;
 import pl.edu.agh.logger.ConsoleMessageSerializer;
 import pl.edu.agh.logger.FileMessageSerializer;
 import pl.edu.agh.logger.Logger;
+import pl.edu.agh.logger.guice.LoggerModule;
 import pl.edu.agh.school.DayOfWeek;
 import pl.edu.agh.school.Person;
 import pl.edu.agh.school.School;
@@ -28,19 +29,22 @@ public class SchoolDemo {
     private final DateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
     @Inject
-    public SchoolDemo() {
-        school = new School();
+    public SchoolDemo(School school) {
+        this.school = school;
     }
 
     public static void main(String[] args) throws Exception {
 
-        Logger.getInstance().registerSerializer(new ConsoleMessageSerializer());
-        Logger.getInstance().registerSerializer(
-                new FileMessageSerializer("logfile.log"));
+        Injector injector = Guice.createInjector(new SchoolModule(), new LoggerModule());
 
-        Injector injector = Guice.createInjector(new SchoolModule());
+        Logger logger = injector.getInstance(Logger.class);
+
+        logger.registerSerializer(new ConsoleMessageSerializer());
+        logger.registerSerializer(new FileMessageSerializer("persistence.log"));
+
 
         SchoolDemo schoolDemo = injector.getInstance(SchoolDemo.class);
+
 
         schoolDemo.initTeachers();
         schoolDemo.initClass();
@@ -63,7 +67,8 @@ public class SchoolDemo {
 
     public void initClass() throws ParseException {
         if (school.findClass("1A", "humane").isEmpty()) {
-            SchoolClass schoolClass = new SchoolClass("1A", "humane");
+            SchoolClass schoolClass = injector.getInstance(SchoolClass.class);
+            schoolClass.initialize("1A", "humane");
             schoolClass.addStudent(new Student("Peter", "Pan"));
             schoolClass.addStudent(new Student("Anna", "Shirley"));
             schoolClass.addStudent(new Student("Harry", "Potter"));
