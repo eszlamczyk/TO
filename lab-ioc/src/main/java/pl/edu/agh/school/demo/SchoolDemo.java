@@ -47,13 +47,14 @@ public class SchoolDemo {
 
 
         schoolDemo.initTeachers();
-        schoolDemo.initClass();
+        schoolDemo.initClass(injector);
         schoolDemo.showClass();
         schoolDemo.showScheduleForClass();
         schoolDemo.showScheduleForTeacher();
     }
 
     public void initTeachers() {
+
         if (school.findPerson("Thomas", "Anderson").isEmpty()) {
             school.addTeacher(new Teacher("Thomas", "Anderson"));
             school.addTeacher(new Teacher("Han", "Solo"));
@@ -65,10 +66,10 @@ public class SchoolDemo {
         }
     }
 
-    public void initClass() throws ParseException {
+    public void initClass(Injector injector) throws ParseException {
         if (school.findClass("1A", "humane").isEmpty()) {
             SchoolClass schoolClass = injector.getInstance(SchoolClass.class);
-            schoolClass.initialize("1A", "humane");
+            schoolClass.setNameAndProfile("1A", "humane");
             schoolClass.addStudent(new Student("Peter", "Pan"));
             schoolClass.addStudent(new Student("Anna", "Shirley"));
             schoolClass.addStudent(new Student("Harry", "Potter"));

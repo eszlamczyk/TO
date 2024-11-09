@@ -34,7 +34,7 @@ public class Subject implements Serializable {
 			terms.add(newTerm);
 			newTerm.setSubject(this);
 			Logger.getInstance().log(
-					"Added " + newTerm.toString() + " to " + toString());
+					"Added " + newTerm + " to " + this);
 		}
 	}
 

@@ -1,11 +1,15 @@
 package pl.edu.agh.school;
 
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.agh.logger.guice.LoggerModule;
+import pl.edu.agh.school.guice.SchoolModule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +42,9 @@ public class SchoolClassTest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		sclass = new SchoolClass(CLASS_NAME, CLASS_PROFILE);
+		Injector injector = Guice.createInjector(new SchoolModule(), new LoggerModule());
+		sclass = injector.getInstance(SchoolClass.class);
+		sclass.setNameAndProfile(CLASS_NAME, CLASS_PROFILE);
 		List<Term> terms1 = new ArrayList<Term>();
 		terms1.add(term1);
 		List<Term> terms2 = new ArrayList<Term>();

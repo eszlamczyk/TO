@@ -17,7 +17,7 @@ public class Logger {
 
     public Logger() {
         init();
-        this.registeredSerializers = new HashSet<IMessageSerializer>();
+        this.registeredSerializers = new HashSet<>();
     }
 
     public Logger(Set<IMessageSerializer> registeredSerializers) {

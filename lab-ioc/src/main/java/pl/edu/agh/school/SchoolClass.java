@@ -20,12 +20,8 @@ public class SchoolClass implements Serializable {
 	private final List<Student> students = new ArrayList<>();
 	private final List<Subject> subjects = new ArrayList<>();
 
-	public SchoolClass(String name, String profile) {
-		this.name = name;
-		this.profile = profile;
+	public SchoolClass() {
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -44,7 +40,7 @@ public class SchoolClass implements Serializable {
 		if (!subjects.contains(subject)) {
 			subjects.add(subject);
 			logger.log(
-					"Added " + subject.toString() + " to " + this.toString());
+					"Added " + subject + " to " + this);
 		}
 	}
 
@@ -57,8 +53,8 @@ public class SchoolClass implements Serializable {
 			students.add(student);
 			student.setSchoolClass(this);
 			logger.log(
-					"Added " + student.toString() + " to class "
-							+ this.toString());
+					"Added " + student + " to class "
+							+ this);
 		}
 	}
 
@@ -67,7 +63,7 @@ public class SchoolClass implements Serializable {
 	}
 
 	public Collection<Term> getSchedule() {
-		Collection<Term> terms = new ArrayList<Term>();
+		Collection<Term> terms = new ArrayList<>();
 		for (Subject subject : subjects) {
 			terms.addAll(subject.getSchedule());
 		}
@@ -78,8 +74,13 @@ public class SchoolClass implements Serializable {
 		return this.name.equals(name) && this.profile.equals(profile);
 	}
 
-	public void initialize(String name, String profile) {
+	public void setNameAndProfile(String name, String profile){
 		this.name = name;
 		this.profile = profile;
+	}
+
+	//for test purpose
+	public Logger getLogger() {
+		return logger;
 	}
 }
